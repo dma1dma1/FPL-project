@@ -1,0 +1,6 @@
+# dependencies
+/venv
+/.vscode
+
+#misc
+ideas.txt
