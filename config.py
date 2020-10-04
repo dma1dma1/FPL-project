@@ -1,6 +1,9 @@
 from configparser import ConfigParser
 
 def config(filename = 'database.ini', section = 'postgresql'):
+    '''
+    Gets postgreSQL credentials from 'database.ini' file
+    '''
     parser = ConfigParser()
     parser.read(filename)
 

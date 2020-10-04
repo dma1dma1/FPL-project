@@ -27,22 +27,6 @@ def getGenericFPLData(url = GENERIC_URL):
     deadlines = [event['deadline_time'] for event in json['events']]
     teams = [[team['id'], team['name']] for team in json['teams']]
     players = json['elements']
-    return deadlines, teams, players
-
-def getFixtureFPLData(url = FIXTURE_URL):
-    '''
-    Gets fixture data
-
-    Param:
-        url (str): URL of fixture FPL API
-
-    Return:
-        information in JSON format
-    '''
-    r = requests.get(url)
-    if r.status_code != 200:
-        raise Exception("Fixture data error code:" + str(r.status_code))
-    json = r.json()
     return json
 
 def getPlayerFPLData(id, url = PLAYER_URL):

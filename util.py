@@ -1,7 +1,18 @@
 import psycopg2
 from config import config
+from dataCollector import getGenericFPLData
+from datetime import datetime
 
 def connect(command):
+    '''
+    Connects to postgreSQL database and runs given command
+
+    Param:
+        command (str): SQL file to be executed
+
+    Return:
+        None
+    '''
     try:
         # Get connection params
         params = config()
@@ -30,3 +41,17 @@ def connect(command):
         if conn:
             cur.close()
             conn.close()
+
+def getGameweek():
+    g_data = getGenericFPLData()
+    deadlines = [event['deadline_time'] for event in g_data['events']]
+
+    # Get current time
+    time = datetime.utcnow()
+
+    # Convert deadlines to datetime while comparing
+    for i in range(len(deadlines)):
+        if datetime.strptime(deadlines[i], '%Y-%m-%dT%H:%M:%SZ') > time:
+            return i + 1
+
+connect('SQL\init_db.sql')
