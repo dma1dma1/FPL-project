@@ -1,8 +1,8 @@
-# dependencies
+# Dependencies
 /venv
 /.vscode
 
-#misc
+# misc
 ideas.txt
 database.ini
-**/__pycache__
+/__pycache__
