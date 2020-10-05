@@ -73,7 +73,7 @@ CREATE TABLE "Player season data" (
     "xa" decimal,
     "xg_90" decimal,
     "xa_90" decimal,
-    "xg+xa" decimal,
+    "xg+xa_90" decimal,
     "npxg_90" decimal,
     "npxg+xa_90" decimal
 );

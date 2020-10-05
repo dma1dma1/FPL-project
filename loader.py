@@ -1,4 +1,5 @@
 from util import connect
+from collections import defaultdict
 from dataCollector import *
 from cleaners import *
 
@@ -23,11 +24,16 @@ def full_load():
 
     player_info = []
 
-    team_data, player_data = getFBrefdata(FBref_urls[0])
+    team_data, player_data = getFBrefdata(FBref_urls[3], 'standard')
+    clean_player_data = [FBref_player_cleaner(player) for player in player_data]
 
-    print(cleaned_players_fpl[0])
-    print('')
-    print(player_data[0])
+    d = defaultdict(dict)
+
+    for player in cleaned_players_fpl:
+        d[player['player_name']].update(player)
+
+    for player in clean_player_data:
+        d[player['player_name']].update(player)
 
     return
 

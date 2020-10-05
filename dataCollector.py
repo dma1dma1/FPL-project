@@ -76,7 +76,7 @@ def getFBrefdata(url, page_type):
     player_head = tableheads[1][1].text.strip().split('\n')
 
     # Remove duplicates in table head so dict is processed correctly
-    if page_type == 'general':
+    if page_type == 'standard':
         for i in [12, 13, 14, 15, 16, 20, 21, 22, 23, 24]:
             team_head[i] += '_90'
         for i in [16, 17, 18, 19, 20, 24, 25, 26, 27, 28]:
@@ -92,5 +92,3 @@ def getFBrefdata(url, page_type):
     player_table = [dict(zip(player_head, data)) for data in player_data]
 
     return team_table, player_table
-
-getFBrefdata('https://fbref.com/en/comps/9/1631/stats/2017-2018-Premier-League-Stats', 'general')
