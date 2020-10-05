@@ -2,10 +2,7 @@ import requests
 import re
 import json
 from bs4 import BeautifulSoup
-
-GENERIC_URL = 'https://fantasy.premierleague.com/api/bootstrap-static/'
-FIXTURE_URL = 'https://fantasy.premierleague.com/api/bootstrap-static/'
-PLAYER_URL = 'https://fantasy.premierleague.com/api/element-summary/'
+from constants import GENERIC_URL, PLAYER_URL
 
 def getGenericFPLData(url = GENERIC_URL):
     '''

@@ -1,6 +1,6 @@
 CREATE TABLE "gw player data" (
     "player_id" integer,
-    "season" integer,
+    "season" char,
     "element_type" integer,
     "chance_playing" integer,
     "element" integer,
@@ -37,10 +37,9 @@ CREATE TABLE "gw player data" (
     "gw" integer
 );
 
-
 CREATE TABLE "Player season data" (
     "player_id" integer,
-    "season" integer,
+    "season" char,
     "element_type" integer,
     "element_code" integer,
     "start_cost" integer,
@@ -78,7 +77,6 @@ CREATE TABLE "Player season data" (
     "npxg+xa_90" decimal
 );
 
-
 CREATE TABLE "Player info" (
     "player_id" serial,
     "player_name" char,
@@ -86,16 +84,15 @@ CREATE TABLE "Player info" (
     CONSTRAINT "Player info_pk" PRIMARY KEY ("player_id")
 );
 
-
 CREATE TABLE "Team info" (
     "team_id" serial,
     "team_name" char,
     CONSTRAINT "Team info_pk" PRIMARY KEY ("team_id")
 );
 
-
 CREATE TABLE "Goalkeeper season data" (
     "player_id" integer,
+    "season" char,
     "goals_against" integer,
     "ga90" decimal,
     "shots_against" integer,
@@ -105,10 +102,9 @@ CREATE TABLE "Goalkeeper season data" (
     "cs_percent" integer
 );
 
-
 CREATE TABLE "Team season data" (
     "team_id" integer,
-    "season" integer,
+    "season" char,
     "goals" integer,
     "assists" integer,
     "pks" integer,
@@ -130,7 +126,6 @@ CREATE TABLE "Team season data" (
     "npxg+xa_90" decimal
 );
 
-
 ALTER TABLE "gw player data" ADD CONSTRAINT "gw player data_fk0" FOREIGN KEY ("player_id") REFERENCES "Player info"("player_id");
 
 ALTER TABLE "Player season data" ADD CONSTRAINT "Player season data_fk0" FOREIGN KEY ("player_id") REFERENCES "Player info"("player_id");
@@ -140,7 +135,3 @@ ALTER TABLE "Player info" ADD CONSTRAINT "Player info_fk0" FOREIGN KEY ("team_id
 ALTER TABLE "Goalkeeper season data" ADD CONSTRAINT "Goalkeeper season data_fk0" FOREIGN KEY ("player_id") REFERENCES "Player info"("player_id");
 
 ALTER TABLE "Team season data" ADD CONSTRAINT "Team season data_fk0" FOREIGN KEY ("team_id") REFERENCES "Team info"("team_id");
-
-
-
-

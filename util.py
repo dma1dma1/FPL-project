@@ -2,6 +2,7 @@ import psycopg2
 from config import config
 from dataCollector import getGenericFPLData
 from datetime import datetime
+import csv
 
 def connect(command):
     '''
@@ -42,6 +43,10 @@ def connect(command):
             cur.close()
             conn.close()
 
+def csvtodicts(filename):
+    with open(filename, 'r', encoding='utf-8') as f:
+        return list(csv.DictReader(f))
+
 def getGameweek():
     g_data = getGenericFPLData()
     deadlines = [event['deadline_time'] for event in g_data['events']]
@@ -55,9 +60,17 @@ def getGameweek():
             return i + 1
 
 def debug_names(player_dict):
+    print('Wrong FPL name or no FPL data: ')
     for player in player_dict.values():
         try:
             player['element_type']
         except:
             print(player['player_name'])
+    print('')
+    '''print('No FBref data: ')
+    for player in player_dict.values():
+        try:
+            player['gls_90']
+        except:
+            print(player['player_name'])'''
     return

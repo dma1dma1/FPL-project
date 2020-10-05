@@ -27,3 +27,10 @@ def FBref_player_cleaner(player):
         'npxg_90': player['npxG_90'],
         'npxg+xa_90': player['npxG+xA_90']
     }
+
+def gw_data_cleaner(player):
+    name = ' '.join((player['name'].split('_'))[:2])
+    player['player_name'] = name
+    del player['name']
+    return player
+    
