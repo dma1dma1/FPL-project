@@ -53,5 +53,3 @@ def getGameweek():
     for i in range(len(deadlines)):
         if datetime.strptime(deadlines[i], '%Y-%m-%dT%H:%M:%SZ') > time:
             return i + 1
-
-connect('SQL\init_db.sql')

@@ -2,6 +2,7 @@ CREATE TABLE "gw player data" (
     "player_id" integer,
     "season" integer,
     "element_type" integer,
+    "chance_playing" integer,
     "element" integer,
     "fixture" integer,
     "opponent_team" integer,
@@ -32,7 +33,8 @@ CREATE TABLE "gw player data" (
     "transfers_balance" integer,
     "selected" integer,
     "transfers_in" integer,
-    "transfers_out" integer
+    "transfers_out" integer,
+    "gw" integer
 );
 
 
