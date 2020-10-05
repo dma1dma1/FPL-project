@@ -50,12 +50,15 @@ def getPlayerFPLData(id, url = PLAYER_URL):
     past_fixtures = json['history']
     return seasons, past_fixtures
 
-def getFBrefdata(url):
+def getFBrefdata(url, page_type):
     '''
     Uses bs4 to scrape data from any fbref.com squad and player stats page
 
     Param:
         url (str): url of page to be scraped
+        page_type (str): type of page to be scraped
+            'standard': Standard stats page
+            'goalkeeping': Goalkeeping stats page
 
     Return:
         team_table (list): list of dicts containing team information
@@ -72,6 +75,13 @@ def getFBrefdata(url):
     team_head = tableheads[0][0].text.strip().split('\n')
     player_head = tableheads[1][1].text.strip().split('\n')
 
+    # Remove duplicates in table head so dict is processed correctly
+    if page_type == 'general':
+        for i in [12, 13, 14, 15, 16, 20, 21, 22, 23, 24]:
+            team_head[i] += '_90'
+        for i in [16, 17, 18, 19, 20, 24, 25, 26, 27, 28]:
+            player_head[i] += '_90'
+
     # Table body processing
     bodies = html.find_all('tbody')
     team_data = [[data.text for data in tr] for tr in bodies[0].find_all('tr')]
@@ -82,3 +92,5 @@ def getFBrefdata(url):
     player_table = [dict(zip(player_head, data)) for data in player_data]
 
     return team_table, player_table
+
+getFBrefdata('https://fbref.com/en/comps/9/1631/stats/2017-2018-Premier-League-Stats', 'general')
