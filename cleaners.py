@@ -1,10 +1,33 @@
 from name_changes import NAME_CHANGES
 
+def player_info_cleaner(player):
+    name = ''
+
+    # FPL data
+    try: 
+        name = player['first_name'] + ' ' + player['second_name']
+    except:
+        pass
+    
+    # FBref data
+    try:
+        name = player['Player']
+    except:
+        print('No name found')
+
+    if name in NAME_CHANGES:
+        name = NAME_CHANGES[name]
+
+    return name
+
 def fpl_player_cleaner(player):
+    name = player['first_name'] + ' ' + player['second_name']
+    if name in NAME_CHANGES:
+        name = NAME_CHANGES[name]
     return {
-        'player_name': player['first_name'] + ' ' + player['second_name'], 
+        'player_name': name, 
         'element_type': player['element_type'], 
-        'team_id': player['team'],
+        'team_id': player['team_code'],
         'chance_playing': player['chance_of_playing_this_round']}
 
 def FBref_player_cleaner(player):

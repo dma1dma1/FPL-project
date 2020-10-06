@@ -1,137 +1,143 @@
-CREATE TABLE "gw player data" (
-    "player_id" integer,
-    "season" char,
-    "element_type" integer,
-    "chance_playing" integer,
-    "element" integer,
-    "fixture" integer,
-    "opponent_team" integer,
-    "total_points" integer,
+CREATE TABLE "gw_player_data" (
+    "player_id" INTEGER,
+    "season" TEXT,
+    "element_type" INTEGER,
+    "chance_playing" INTEGER,
+    "element" INTEGER,
+    "fixture" INTEGER,
+    "opponent_team" INTEGER,
+    "total_points" INTEGER,
     "was_home" BOOLEAN,
-    "kickoff_time" char,
-    "team_h_score" integer,
-    "team_a_score" integer,
-    "round" integer,
-    "minutes" integer,
-    "goals_scored" integer,
-    "assists" integer,
-    "clean_sheets" integer,
-    "goals_conceded" integer,
-    "own_goals" integer,
-    "penalties_saved" integer,
-    "penalties_missed" integer,
-    "yellow_cards" integer,
-    "red_cards" integer,
-    "saves" integer,
-    "bonus" integer,
-    "bps" integer,
-    "influence" char,
-    "creativity" char,
-    "threat" char,
-    "ict_index" char,
-    "value" integer,
-    "transfers_balance" integer,
-    "selected" integer,
-    "transfers_in" integer,
-    "transfers_out" integer,
-    "gw" integer
+    "kickoff_time" TEXT,
+    "team_h_score" INTEGER,
+    "team_a_score" INTEGER,
+    "round" INTEGER,
+    "minutes" INTEGER,
+    "goals_scored" INTEGER,
+    "assists" INTEGER,
+    "clean_sheets" INTEGER,
+    "goals_conceded" INTEGER,
+    "own_goals" INTEGER,
+    "penalties_saved" INTEGER,
+    "penalties_missed" INTEGER,
+    "yellow_cards" INTEGER,
+    "red_cards" INTEGER,
+    "saves" INTEGER,
+    "bonus" INTEGER,
+    "bps" INTEGER,
+    "influence" TEXT,
+    "creativity" TEXT,
+    "threat" TEXT,
+    "ict_index" TEXT,
+    "value" INTEGER,
+    "transfers_balance" INTEGER,
+    "selected" INTEGER,
+    "transfers_in" INTEGER,
+    "transfers_out" INTEGER,
+    "gw" INTEGER
 );
 
-CREATE TABLE "Player season data" (
-    "player_id" integer,
-    "season" char,
-    "element_type" integer,
-    "element_code" integer,
-    "start_cost" integer,
-    "end_cost" integer,
-    "total_points" integer,
-    "minutes" integer,
-    "goals_scored" integer,
-    "assists" integer,
-    "clean_sheets" integer,
-    "goal_conceded" integer,
-    "own_goals" integer,
-    "penalties_saved" integer,
-    "penalties_missed" integer,
-    "yellow_cards" integer,
-    "red_cards" integer,
-    "saves" integer,
-    "bonus" integer,
-    "bps" integer,
-    "influence" char,
-    "creativity" char,
-    "threat" char,
-    "ict_index" char,
-    "gls_90" decimal,
-    "ast_90" decimal,
-    "g+a_90" decimal,
-    "g-pk_90" decimal,
-    "g+a-pk_90" decimal,
-    "xg" decimal,
-    "npxg" decimal,
-    "xa" decimal,
-    "xg_90" decimal,
-    "xa_90" decimal,
-    "xg+xa_90" decimal,
-    "npxg_90" decimal,
-    "npxg+xa_90" decimal
+
+CREATE TABLE "player_season_data" (
+    "player_id" INTEGER,
+    "season" TEXT,
+    "element_type" INTEGER,
+    "element_code" INTEGER,
+    "start_cost" INTEGER,
+    "end_cost" INTEGER,
+    "total_points" INTEGER,
+    "minutes" INTEGER,
+    "goals_scored" INTEGER,
+    "assists" INTEGER,
+    "clean_sheets" INTEGER,
+    "goal_conceded" INTEGER,
+    "own_goals" INTEGER,
+    "penalties_saved" INTEGER,
+    "penalties_missed" INTEGER,
+    "yellow_cards" INTEGER,
+    "red_cards" INTEGER,
+    "saves" INTEGER,
+    "bonus" INTEGER,
+    "bps" INTEGER,
+    "influence" TEXT,
+    "creativity" TEXT,
+    "threat" TEXT,
+    "ict_index" TEXT,
+    "gls_90" DECIMAL,
+    "ast_90" DECIMAL,
+    "g+a_90" DECIMAL,
+    "g-pk_90" DECIMAL,
+    "g+a-pk_90" DECIMAL,
+    "xg" DECIMAL,
+    "npxg" DECIMAL,
+    "xa" DECIMAL,
+    "xg_90" DECIMAL,
+    "xa_90" DECIMAL,
+    "xg+xa_90" DECIMAL,
+    "npxg_90" DECIMAL,
+    "npxg+xa_90" DECIMAL
 );
 
-CREATE TABLE "Player info" (
+
+CREATE TABLE "player_info" (
     "player_id" serial,
-    "player_name" char,
-    "team_id" integer,
-    CONSTRAINT "Player info_pk" PRIMARY KEY ("player_id")
+    "player_name" TEXT,
+    "team_code" INTEGER,
+    CONSTRAINT "player_info_pk" PRIMARY KEY ("player_id")
 );
 
-CREATE TABLE "Team info" (
+
+CREATE TABLE "team_info" (
     "team_id" serial,
-    "team_name" char,
-    CONSTRAINT "Team info_pk" PRIMARY KEY ("team_id")
+    "team_code" INTEGER UNIQUE,
+    "team_name" TEXT,
+    CONSTRAINT "team_info_pk" PRIMARY KEY ("team_id")
 );
 
-CREATE TABLE "Goalkeeper season data" (
-    "player_id" integer,
-    "season" char,
-    "goals_against" integer,
-    "ga90" decimal,
-    "shots_against" integer,
-    "saves" integer,
-    "save_percent" decimal,
-    "clean_sheets" integer,
-    "cs_percent" integer
+
+CREATE TABLE "goalkeeper_season_data" (
+    "player_id" INTEGER,
+    "season" TEXT,
+    "goals_against" INTEGER,
+    "ga90" DECIMAL,
+    "shots_against" INTEGER,
+    "saves" INTEGER,
+    "save_percent" DECIMAL,
+    "clean_sheets" INTEGER,
+    "cs_percent" INTEGER
 );
 
-CREATE TABLE "Team season data" (
-    "team_id" integer,
-    "season" char,
-    "goals" integer,
-    "assists" integer,
-    "pks" integer,
-    "pkatts" integer,
-    "yellow_cards" integer,
-    "red_cards" integer,
-    "gls_90" decimal,
-    "ast_90" decimal,
-    "g+a_90" decimal,
-    "g-pk_90" decimal,
-    "g+a-pk_90" decimal,
-    "xg" decimal,
-    "npxg" decimal,
-    "xa" decimal,
-    "xg_90" decimal,
-    "xa_90" decimal,
-    "xg+xa" decimal,
-    "npxg_90" decimal,
-    "npxg+xa_90" decimal
+
+CREATE TABLE "team_season_data" (
+    "team_id" INTEGER,
+    "season" TEXT,
+    "goals" INTEGER,
+    "assists" INTEGER,
+    "pks" INTEGER,
+    "pkatts" INTEGER,
+    "yellow_cards" INTEGER,
+    "red_cards" INTEGER,
+    "gls_90" DECIMAL,
+    "ast_90" DECIMAL,
+    "g+a_90" DECIMAL,
+    "g-pk_90" DECIMAL,
+    "g+a-pk_90" DECIMAL,
+    "xg" DECIMAL,
+    "npxg" DECIMAL,
+    "xa" DECIMAL,
+    "xg_90" DECIMAL,
+    "xa_90" DECIMAL,
+    "xg+xa" DECIMAL,
+    "npxg_90" DECIMAL,
+    "npxg+xa_90" DECIMAL
 );
 
-ALTER TABLE "gw player data" ADD CONSTRAINT "gw player data_fk0" FOREIGN KEY ("player_id") REFERENCES "Player info"("player_id");
 
-ALTER TABLE "Player season data" ADD CONSTRAINT "Player season data_fk0" FOREIGN KEY ("player_id") REFERENCES "Player info"("player_id");
+ALTER TABLE "gw_player_data" ADD CONSTRAINT "gw_player_data_fk0" FOREIGN KEY ("player_id") REFERENCES "player_info"("player_id");
 
-ALTER TABLE "Player info" ADD CONSTRAINT "Player info_fk0" FOREIGN KEY ("team_id") REFERENCES "Team info"("team_id");
+ALTER TABLE "player_season_data" ADD CONSTRAINT "player_season_data_fk0" FOREIGN KEY ("player_id") REFERENCES "player_info"("player_id");
 
-ALTER TABLE "Goalkeeper season data" ADD CONSTRAINT "Goalkeeper season data_fk0" FOREIGN KEY ("player_id") REFERENCES "Player info"("player_id");
 
-ALTER TABLE "Team season data" ADD CONSTRAINT "Team season data_fk0" FOREIGN KEY ("team_id") REFERENCES "Team info"("team_id");
+ALTER TABLE "goalkeeper_season_data" ADD CONSTRAINT "goalkeeper_season_data_fk0" FOREIGN KEY ("player_id") REFERENCES "player_info"("player_id");
+
+ALTER TABLE "team_season_data" ADD CONSTRAINT "team_season_data_fk0" FOREIGN KEY ("team_id") REFERENCES "team_info"("team_id");

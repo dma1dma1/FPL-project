@@ -4,12 +4,14 @@ from dataCollector import getGenericFPLData
 from datetime import datetime
 import csv
 
-def connect(command):
+def connect(command, isfile, data = None):
     '''
     Connects to postgreSQL database and runs given command
 
     Param:
         command (str): SQL file to be executed
+        isfile (bool): Whether the command is stored in a file
+        data: data to be processed
 
     Return:
         None
@@ -28,7 +30,17 @@ def connect(command):
 
         # Executing command
         print('Executing command...')
-        cur.execute(open(command, 'r').read())
+        if isfile:
+            with open(command, 'r') as c:
+                if data:
+                    cur.execute(c.read(), data)
+                else:
+                    cur.execute(c.read())
+        else:
+            if data:
+                cur.execute(command, data)
+            else:
+                cur.execute(command)
         print('Finished executing!')
 
         # Close connection
