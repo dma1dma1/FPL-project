@@ -1,5 +1,13 @@
 from name_changes import NAME_CHANGES
 
+def nameCleaner(name):
+    '''
+    This function cleans a name to be standardized, and ready for insertion into SQL
+    '''
+    if name in NAME_CHANGES:
+        name = NAME_CHANGES[name]
+    return name.replace("'", "''")
+
 def player_info_cleaner(player):
     name = ''
 
@@ -7,33 +15,24 @@ def player_info_cleaner(player):
     try: 
         name = player['first_name'] + ' ' + player['second_name']
     except:
-        pass
-    
-    # FBref data
-    try:
-        name = player['Player']
-    except:
-        print('No name found')
-
-    if name in NAME_CHANGES:
-        name = NAME_CHANGES[name]
-
-    return name
+        # FBref data
+        try:
+            name = player['Player']
+        except:
+            print(player, 'No name found')
+   
+    return nameCleaner(name)
 
 def fpl_player_cleaner(player):
-    name = player['first_name'] + ' ' + player['second_name']
-    if name in NAME_CHANGES:
-        name = NAME_CHANGES[name]
+    name = nameCleaner(player['first_name'] + ' ' + player['second_name'])
     return {
         'player_name': name, 
         'element_type': player['element_type'], 
-        'team_id': player['team_code'],
+        'team_code': player['team_code'],
         'chance_playing': player['chance_of_playing_this_round']}
 
 def FBref_player_cleaner(player):
-    name = player['Player']
-    if name in NAME_CHANGES:
-        name = NAME_CHANGES[name]
+    name = nameCleaner(player['Player'])
     return {
         'player_name': name,
         'gls_90': player['Gls_90'],
