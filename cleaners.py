@@ -55,4 +55,29 @@ def gw_data_cleaner(player):
     player['player_name'] = name
     del player['name']
     return player
-    
+
+def team_season_cleaner(team):
+    return [
+        team['id'],
+        team['Squad'],
+        team['season'],
+        team['Gls'],
+        team['Ast'],
+        team['PK'],
+        team['PKatt'],
+        team['CrdY'],
+        team['CrdR'],
+        team['Gls_90'],
+        team['Ast_90'],
+        team['G+A_90'],
+        team['G-PK_90'],
+        team['G+A-PK_90'],
+        team['xG'],
+        team['npxG'],
+        team['xA'],
+        team['xG_90'],
+        team['xA_90'],
+        team['xG+xA_90'],
+        team['npxG_90'],
+        team['npxG+xA_90']
+    ]

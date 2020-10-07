@@ -110,6 +110,7 @@ CREATE TABLE "goalkeeper_season_data" (
 
 CREATE TABLE "team_season_data" (
     "team_id" INTEGER,
+    "team_name" TEXT,
     "season" TEXT,
     "goals" INTEGER,
     "assists" INTEGER,

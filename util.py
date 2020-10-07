@@ -4,12 +4,13 @@ from dataCollector import getGenericFPLData
 from datetime import datetime
 import csv
 
-def connect(command, isfile, data = None):
+def connect(command, hasReturn=False, isfile = False, data = None):
     '''
     Connects to postgreSQL database and runs given command
 
     Param:
         command (str): SQL file to be executed
+        hasReturn (bool): Whether the command has a return value
         isfile (bool): Whether the command is stored in a file
         data: data to be processed
 
@@ -33,15 +34,18 @@ def connect(command, isfile, data = None):
         if isfile:
             with open(command, 'r') as c:
                 if data:
-                    cur.execute(c.read(), data)
+                    cur.executemany(c.read(), data)
                 else:
                     cur.execute(c.read())
         else:
             if data:
-                cur.execute(command, data)
+                cur.executemany(command, data)
             else:
                 cur.execute(command)
         print('Finished executing!')
+
+        if hasReturn:
+            res = cur.fetchall()
 
         # Close connection
         cur.close()
@@ -54,6 +58,8 @@ def connect(command, isfile, data = None):
         if conn:
             cur.close()
             conn.close()
+
+    return res if hasReturn else None
 
 def csvtodicts(filename):
     with open(filename, 'r', encoding='utf-8') as f:
@@ -86,3 +92,5 @@ def debug_names(player_dict):
         except:
             print(player['player_name'])'''
     return
+
+#connect('SQL/drop.sql', isfile=True)
