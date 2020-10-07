@@ -31,10 +31,39 @@ def fpl_player_cleaner(player):
         'team_code': player['team_code'],
         'chance_playing': player['chance_of_playing_this_round']}
 
+def fpl_player_season_cleaner(player):
+    name = nameCleaner(player['first_name'] + ' ' + player['second_name'])
+    return {
+        'player_name': name,
+        'season': player['season'],
+        'element_type': player['element_type'],
+        'start_cost': str(int(player['now_cost']) - int(player['cost_change_start'])),
+        'end_cost': player['now_cost'],
+        'total_points': player['total_points'],
+        'minutes': player['minutes'],
+        'goals_scored': player['goals_scored'],
+        'assists': player['assists'],
+        'clean_sheets': player['clean_sheets'],
+        'goals_conceded': player['goals_conceded'],
+        'own_goals': player['own_goals'],
+        'penalties_saved': player['penalties_saved'],
+        'penalties_missed': player['penalties_missed'],
+        'yellow_cards': player['yellow_cards'],
+        'red_cards': player['red_cards'],
+        'saves': player['saves'],
+        'bonus': player['bonus'],
+        'bps': player['bps'],
+        'influence': player['influence'],
+        'creativity': player['creativity'],
+        'threat': player['threat'],
+        'ict_index': player['ict_index']
+    }
+
 def FBref_player_cleaner(player):
     name = nameCleaner(player['Player'])
     return {
         'player_name': name,
+        'season': player['season'],
         'gls_90': player['Gls_90'],
         'ast_90': player['Ast_90'],
         'g+a_90': player['G+A_90'],
@@ -80,4 +109,44 @@ def team_season_cleaner(team):
         team['xG+xA_90'],
         team['npxG_90'],
         team['npxG+xA_90']
+    ]
+
+def player_season_cleaner(player):
+    return [
+        player['id'],
+        player['season'],
+        player['element_type'],
+        player['start_cost'],
+        player['end_cost'],
+        player['total_points'],
+        player['minutes'],
+        player['goals_scored'],
+        player['assists'],
+        player['clean_sheets'],
+        player['goals_conceded'],
+        player['own_goals'],
+        player['penalties_saved'],
+        player['penalties_missed'],
+        player['yellow_cards'],
+        player['red_cards'],
+        player['saves'],
+        player['bonus'],
+        player['bps'],
+        player['influence'],
+        player['creativity'],
+        player['threat'],
+        player['ict_index'],
+        player['gls_90'],
+        player['ast_90'],
+        player['g+a_90'],
+        player['g-pk_90'],
+        player['g+a-pk_90'],
+        player['xg'],
+        player['npxg'],
+        player['xg'],
+        player['xg_90'],
+        player['xa_90'],
+        player['xg+xa_90'],
+        player['npxg_90'],
+        player['npxg+xa_90']
     ]
