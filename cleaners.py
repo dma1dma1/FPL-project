@@ -2,13 +2,16 @@ from name_changes import NAME_CHANGES
 
 def nameCleaner(name):
     '''
-    This function cleans a name to be standardized, and ready for insertion into SQL
+    Cleans a name to be standardized, and ready for insertion into SQL
     '''
     if name in NAME_CHANGES:
         name = NAME_CHANGES[name]
     return name.replace("'", "''")
 
 def player_info_cleaner(player):
+    '''
+    Extracts name from both FPL and FBref players
+    '''
     name = ''
 
     # FPL data
@@ -149,4 +152,19 @@ def player_season_cleaner(player):
         player['xg+xa_90'],
         player['npxg_90'],
         player['npxg+xa_90']
+    ]
+
+def FBref_goalie_cleaner(player):
+    name = nameCleaner(player['Player'])
+    return [
+        name,
+        player['season'],
+        player['GA'],
+        player['GA90'],
+        player['SoTA'],
+        player['Saves'],
+        player['Save%'],
+        player['CS'],
+        player['CS%'],
+        player['PKsv']
     ]

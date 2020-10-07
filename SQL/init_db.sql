@@ -103,7 +103,8 @@ CREATE TABLE "goalkeeper_season_data" (
     "saves" INTEGER,
     "save_percent" DECIMAL,
     "clean_sheets" INTEGER,
-    "cs_percent" INTEGER
+    "cs_percent" DECIMAL,
+    "pks_saved" INTEGER
 );
 
 

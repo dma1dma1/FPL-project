@@ -43,6 +43,7 @@ def full_load():
 
     old_players = set()
 
+    # Get FBref player data
     for url, year in zip(FBref_urls, ['2017-18', '2018-19', '2019-20', '2020-21']):
         team_data, player_data = getFBrefdata(url, 'standard')
         for team in team_data:
@@ -52,6 +53,14 @@ def full_load():
         team_season_data += team_data
         player_season_data += player_data
         old_players = old_players | (set(player_info_cleaner(player) for player in player_data) - fpl_players)
+
+    # Get FPL player data
+    for f, season in zip(player_history, ['2017-18', '2018-19', '2019-20']):
+        data = csvtodicts(f)
+        for player in data:
+            player['season'] = season
+        players_fpl += data
+        old_players = old_players | (set(player_info_cleaner(player) for player in data) - fpl_players)
 
     for player in old_players:
         if player not in fpl_players:
@@ -95,23 +104,10 @@ def full_load():
     for player in players_fpl:
         player['season'] = '2020-21'
 
-    # Get FPL player season data
-    for f, season in zip(player_history, ['2017-18', '2018-19', '2019-20']):
-        data = csvtodicts(f)
-        for player in data:
-            player['season'] = season
-        players_fpl += data
-
     clean_players_fpl = [fpl_player_season_cleaner(player) for player in players_fpl]
     clean_players_FBref = [FBref_player_cleaner(player) for player in player_season_data]
-
-    for player in clean_players_fpl:
-        try:
-            player['id'] = player_ids[player['player_name']]
-        except:
-            player['id'] = None
-    
-    all_player_season_data = defaultdict(lambda: defaultdict(str))
+ 
+    all_player_season_data = defaultdict(lambda: defaultdict(lambda: None))
 
     # Combine data from both sources
     for player in clean_players_fpl:
@@ -120,6 +116,13 @@ def full_load():
         all_player_season_data[(player['player_name'], player['season'])].update(player)
 
     player_season_data_final = list(all_player_season_data.values())
+
+    for player in player_season_data_final:
+        try:
+            player['id'] = player_ids[player['player_name']]
+        except:
+            player['id'] = None
+
     player_season_data_final = [player_season_cleaner(player) for player in player_season_data_final]
     player_season_data_final = [[None if v=='' else v for v in player]for player in player_season_data_final]
     player_season_query = """INSERT INTO player_season_data VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
@@ -128,6 +131,32 @@ def full_load():
     print("Finished loading player_season_data!\n")
 
     ## Loading goalkeeper_season_data ##
+
+    print('Loading goalkeeper_season_data...\n')
+
+    goalie_data = []
+
+    for url, season in zip(FBref_gk_urls, ['2017-18', '2018-19', '2019-20', '2020-21']):
+        _, player_data = getFBrefdata(url, 'goalkeeping')
+        for player in player_data:
+            player['season'] = season
+        goalie_data += player_data
+    
+    goalie_data = [FBref_goalie_cleaner(player) for player in goalie_data]
+
+    for player in goalie_data:
+        try: 
+            player[0] = player_ids[player[0]]
+        except:
+            player[0] = None
+
+    goalie_data = [[None if v=='' else v for v in player] for player in goalie_data]
+    goalie_query = """INSERT INTO goalkeeper_season_data VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+    connect(goalie_query, data=goalie_data)
+
+    print('Finished loading goalkeeper_season_data!\n')
+
+    ## Loading gw_player_data ##
 
     return
 
