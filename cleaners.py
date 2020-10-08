@@ -31,8 +31,9 @@ def fpl_player_cleaner(player):
     return {
         'player_name': name, 
         'element_type': player['element_type'], 
-        'team_code': player['team_code'],
-        'chance_playing': player['chance_of_playing_this_round']}
+        'id': player['id'],
+        'team_code': player['team_code']
+    }
 
 def fpl_player_season_cleaner(player):
     name = nameCleaner(player['first_name'] + ' ' + player['second_name'])
@@ -82,10 +83,12 @@ def FBref_player_cleaner(player):
         'npxg+xa_90': player['npxG+xA_90']
     }
 
-def gw_data_cleaner(player):
+def gw_data_cleaner(player, season = None):
     name = ' '.join((player['name'].split('_'))[:2])
-    player['player_name'] = name
+    player['player_name'] = nameCleaner(name)
     del player['name']
+    if season:
+        player['season'] = season
     return player
 
 def team_season_cleaner(team):
@@ -167,4 +170,43 @@ def FBref_goalie_cleaner(player):
         player['CS'],
         player['CS%'],
         player['PKsv']
+    ]
+
+def gw_player_cleaner(player):
+    return [
+        player['id'],
+        player['season'],
+        player['element_type'],
+        player['element'],
+        player['fixture'],
+        player['opponent_team'],
+        player['total_points'],
+        player['was_home'],
+        player['kickoff_time'],
+        player['team_h_score'],
+        player['team_a_score'],
+        player['round'],
+        player['minutes'],
+        player['goals_scored'],
+        player['assists'],
+        player['clean_sheets'],
+        player['goals_conceded'],
+        player['own_goals'],
+        player['penalties_saved'],
+        player['penalties_missed'],
+        player['yellow_cards'],
+        player['red_cards'],
+        player['saves'],
+        player['bonus'],
+        player['bps'],
+        player['influence'],
+        player['creativity'],
+        player['threat'],
+        player['ict_index'],
+        player['value'],
+        player['transfers_balance'],
+        player['selected'],
+        player['transfers_in'],
+        player['transfers_out'],
+        player['GW'],
     ]

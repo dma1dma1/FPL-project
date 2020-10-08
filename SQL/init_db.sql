@@ -2,7 +2,6 @@ CREATE TABLE "gw_player_data" (
     "player_id" INTEGER,
     "season" TEXT,
     "element_type" INTEGER,
-    "chance_playing" INTEGER,
     "element" INTEGER,
     "fixture" INTEGER,
     "opponent_team" INTEGER,

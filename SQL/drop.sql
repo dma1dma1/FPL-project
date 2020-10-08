@@ -17,4 +17,3 @@ DROP TABLE IF EXISTS "team_info" CASCADE;
 DROP TABLE IF EXISTS "goalkeeper_season_data" CASCADE;
 
 DROP TABLE IF EXISTS "team_season_data" CASCADE;
-

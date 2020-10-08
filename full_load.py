@@ -1,4 +1,4 @@
-from util import connect, csvtodicts, debug_names
+from util import connect, csvtodicts, parsegws
 from collections import defaultdict
 from dataCollector import *
 from cleaners import *
@@ -8,6 +8,7 @@ def full_load():
     '''
     Performs a first load on the database
     '''
+    print("Beginning Full Load...\n")
     print("Initializing tables...\n")
 
     connect('SQL/drop.sql', isfile=True)
@@ -15,12 +16,10 @@ def full_load():
 
     print("Finished initializing tables!\n")
 
-
     g_data = getGenericFPLData()
     team_season_data = []
     player_season_data = []
     
-
     ## Loading team_info Database ##
     print("Loading team_info...\n")
 
@@ -54,6 +53,10 @@ def full_load():
         player_season_data += player_data
         old_players = old_players | (set(player_info_cleaner(player) for player in player_data) - fpl_players)
 
+    # Update current season FPL
+    for player in players_fpl:
+        player['season'] = '2020-21'
+
     # Get FPL player data
     for f, season in zip(player_history, ['2017-18', '2018-19', '2019-20']):
         data = csvtodicts(f)
@@ -77,7 +80,7 @@ def full_load():
 
     # Get team_id and team_name from previously loaded team_info database
     get_team_season_query = """SELECT team_id, team_name FROM team_info"""
-    team_ids = {name:id for (id, name) in connect(get_team_season_query, hasReturn=True)}
+    team_ids = {name:p_id for (p_id, name) in connect(get_team_season_query, hasReturn=True)}
 
     for team in team_season_data:
         try:
@@ -98,11 +101,7 @@ def full_load():
 
     # Get player_id and player_name from previously loaded player_info database
     get_info_query = """SELECT player_id, player_name FROM player_info"""
-    player_ids = {name:id for (id, name) in connect(get_info_query, hasReturn=True)}
-
-    # Update current season
-    for player in players_fpl:
-        player['season'] = '2020-21'
+    player_ids = {name:p_id for (p_id, name) in connect(get_info_query, hasReturn=True)}
 
     clean_players_fpl = [fpl_player_season_cleaner(player) for player in players_fpl]
     clean_players_FBref = [FBref_player_cleaner(player) for player in player_season_data]
@@ -158,9 +157,41 @@ def full_load():
 
     ## Loading gw_player_data ##
 
+    print('Loading gw_player_data...\n')
+
+    fpl_player_ids = [[d['player_name'], d['id']] for d in fpl_clean_players]
+    
+    gw_data_final = parsegws(fpl_player_ids)
+
+    element_types = {(player[0], player[1]):player[2] for player in player_season_data_final}
+
+    for f, season in zip(gw_data, ['2017-18', '2018-19', '2019-20']):
+        data = csvtodicts(f, encoding='latin-1')
+        data = [gw_data_cleaner(player, season=season) for player in data]
+        gw_data_final += data
+
+    for player in gw_data_final:
+        try:
+            player['id'] = player_ids[player['player_name']]
+        except:
+            player['id'] = None
+
+        try:
+            player['element_type'] = element_types[(player['id'], player['season'])]
+        except:
+            player['element_type'] = None
+        if player['id'] == None:
+            print(player['player_name'])
+
+    gw_data_final = [gw_player_cleaner(player) for player in gw_data_final]
+    gw_data_final = [[None if v=='' else v for v in player]for player in gw_data_final]
+    gw_query = """INSERT INTO gw_player_data VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+    connect(gw_query, data=gw_data_final)
+
+    print('Finished loading gw_player_data!\n')
+    print('Full Load Finished!')
+
     return
 
-def update_load():
-    return
-
-full_load()
+if __name__ == "__main__":
+    full_load()

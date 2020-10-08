@@ -1,8 +1,10 @@
 import psycopg2
 from config import config
-from dataCollector import getGenericFPLData
+from dataCollector import getGenericFPLData, getPlayerFPLData
 from datetime import datetime
+from cleaners import nameCleaner
 import csv
+import time
 
 def connect(command, hasReturn=False, isfile = False, data = None):
     '''
@@ -61,8 +63,11 @@ def connect(command, hasReturn=False, isfile = False, data = None):
 
     return res if hasReturn else None
 
-def csvtodicts(filename):
-    with open(filename, 'r', encoding='utf-8') as f:
+def csvtodicts(filename, encoding='utf-8'):
+    '''
+    Reads a file into a list of dicts with latin-1 encoding
+    '''
+    with open(filename, 'r', encoding=encoding) as f:
         return list(csv.DictReader(f))
 
 def getGameweek():
@@ -76,6 +81,35 @@ def getGameweek():
     for i in range(len(deadlines)):
         if datetime.strptime(deadlines[i], '%Y-%m-%dT%H:%M:%SZ') > time:
             return i + 1
+    return None
+
+def parsegws(player_list, gameweek = None):
+    '''
+    Gets and parses past gws from this FPL season
+    '''
+    res = []
+    for player, p_id in player_list:
+        _, past_gws = getPlayerFPLData(p_id=p_id)
+        if gameweek:
+            # Check if data exists and most recent data is from most recent gw
+            try:
+                data = past_gws[-1]
+                if data['round'] == gameweek:
+                    data['season'] = '2020-21'
+                    data['player_name'] = player
+                    data['GW'] = gameweek
+                    res.append(data)
+            except:
+                pass
+        else:
+            for gw in past_gws:
+                gw['season'] = '2020-21'
+                gw['player_name'] = player
+                gw['GW'] = gw['round']
+                res.append(gw)
+        #time.sleep(1)
+    return res
+            
 
 def debug_names(player_dict):
     print('Wrong FPL name or no FPL data: ')
@@ -84,13 +118,20 @@ def debug_names(player_dict):
             player['element_type']
         except:
             print(player['player_name'])
-    print('')
-    '''print('No FBref data: ')
+    '''print('')
+    print('No FBref data: ')
     for player in player_dict.values():
         try:
             player['gls_90']
         except:
             print(player['player_name'])'''
     return
+
+def getChancePlaying(players):
+    res = {}
+    for player in players:
+        name = nameCleaner(player['first_name'] + ' ' + player['second_name'])
+        res[name] = player['chance_of_playing_this_round']
+    return res
 
 #connect('SQL/drop.sql', isfile=True)

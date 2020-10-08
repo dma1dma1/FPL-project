@@ -26,19 +26,19 @@ def getGenericFPLData(url = GENERIC_URL):
     players = json['elements']
     return json
 
-def getPlayerFPLData(id, url = PLAYER_URL):
+def getPlayerFPLData(p_id, url = PLAYER_URL):
     '''
     Gets FPL player data
 
     Param:
-        id (int): id of player requested
+        p_id (int): FPL id of player requested
         url (str): URL of generic FPL API
 
     Return:
         seasons (list): A list of lists of a player's past seasons in FPL
         past_fixtures (list): A list of lists of a player's past fixtures this season in FPL
     '''
-    r = requests.get(url + str(id) + '/')
+    r = requests.get(url + str(p_id) + '/')
     if r.status_code != 200:
         raise Exception("Player data error code:" + str(r.status_code))
     json = r.json()
