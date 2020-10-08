@@ -19,6 +19,7 @@ def connect(command, hasReturn=False, isfile = False, data = None):
     Return:
         None
     '''
+    res = None
     try:
         # Get connection params
         params = config()

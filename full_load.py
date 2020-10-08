@@ -180,8 +180,6 @@ def full_load():
             player['element_type'] = element_types[(player['id'], player['season'])]
         except:
             player['element_type'] = None
-        if player['id'] == None:
-            print(player['player_name'])
 
     gw_data_final = [gw_player_cleaner(player) for player in gw_data_final]
     gw_data_final = [[None if v=='' else v for v in player]for player in gw_data_final]
