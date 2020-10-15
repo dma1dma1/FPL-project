@@ -3,6 +3,7 @@ Contains relevant constants for the project
 '''
 GENERIC_URL = 'https://fantasy.premierleague.com/api/bootstrap-static/'
 PLAYER_URL = 'https://fantasy.premierleague.com/api/element-summary/'
+CURRENT_SEASON = '2020-21'
 
 FBref_urls = [
     'https://fbref.com/en/comps/9/1631/stats/2017-2018-Premier-League-Stats',

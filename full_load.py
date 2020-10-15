@@ -42,7 +42,7 @@ def full_load():
 
     old_players = set()
 
-    # Get FBref player data
+    # Get FBref data
     for url, year in zip(FBref_urls, ['2017-18', '2018-19', '2019-20', '2020-21']):
         team_data, player_data = getFBrefdata(url, 'standard')
         for team in team_data:
@@ -81,14 +81,8 @@ def full_load():
     # Get team_id and team_name from previously loaded team_info database
     get_team_season_query = """SELECT team_id, team_name FROM team_info"""
     team_ids = {name:p_id for (p_id, name) in connect(get_team_season_query, hasReturn=True)}
-
-    for team in team_season_data:
-        try:
-            team['id'] = team_ids[team['Squad']]
-        except:
-            team['id'] = None
     
-    team_season_data = [team_season_cleaner(team) for team in team_season_data]
+    team_season_data = [team_season_cleaner(team, team_ids) for team in team_season_data]
     team_season_data = [[None if v=='' else v for v in team]for team in team_season_data]
     team_season_query = """INSERT INTO team_season_data VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
     connect(team_season_query, data=team_season_data)
@@ -112,7 +106,18 @@ def full_load():
     for player in clean_players_fpl:
         all_player_season_data[(player['player_name'], player['season'])].update(player)
     for player in clean_players_FBref:
-        all_player_season_data[(player['player_name'], player['season'])].update(player)
+        # Catch players who moved teams mid year
+        if (player['player_name'], player['season']) in all_player_season_data and all_player_season_data[(player['player_name'], player['season'])]['xg'] is not None:
+            for key in list(player.keys())[2:]:
+                value = all_player_season_data[(player['player_name'], player['season'])][key]
+                newValue = player[key]
+                if value != '':
+                    if newValue != '':
+                        all_player_season_data[(player['player_name'], player['season'])][key] = str(float(value) + float(newValue))
+                elif newValue != '':
+                    all_player_season_data[(player['player_name'], player['season'])][key] = newValue
+        else:
+            all_player_season_data[(player['player_name'], player['season'])].update(player)
 
     player_season_data_final = list(all_player_season_data.values())
 

@@ -79,7 +79,7 @@ CREATE TABLE "player_season_data" (
 
 CREATE TABLE "player_info" (
     "player_id" serial,
-    "player_name" TEXT,
+    "player_name" TEXT UNIQUE,
     "team_code" INTEGER,
     CONSTRAINT "player_info_pk" PRIMARY KEY ("player_id")
 );

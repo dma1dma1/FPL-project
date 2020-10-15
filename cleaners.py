@@ -1,4 +1,4 @@
-from name_changes import NAME_CHANGES
+from name_changes import NAME_CHANGES, TEAM_NAMES
 
 def nameCleaner(name):
     '''
@@ -91,7 +91,20 @@ def gw_data_cleaner(player, season = None):
         player['season'] = season
     return player
 
-def team_season_cleaner(team):
+def team_season_cleaner(team, team_ids):
+    
+    # Team name standardization
+    try:
+        team['Squad'] = TEAM_NAMES[team['Squad']]
+    except:
+        pass
+
+    # Add ids to the data
+    try:
+        team['id'] = team_ids[team['Squad']]
+    except:
+        team['id'] = None
+        
     return [
         team['id'],
         team['Squad'],

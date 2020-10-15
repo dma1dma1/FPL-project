@@ -178,3 +178,12 @@ NAME_CHANGES = {
     'Andre-Frank Zambo Anguissa': 'André-Frank Zambo Anguissa',
     'Richairo Živković': 'Richairo Zivkovic'
 }
+
+TEAM_NAMES = {
+    "Leeds United": 'Leeds',
+    "Leicester City": 'Leicester',
+    "Manchester City": 'Man City',
+    "Manchester Utd": 'Man Utd',
+    "Newcastle Utd": 'Newcastle',
+    "Tottenham": 'Spurs'
+}

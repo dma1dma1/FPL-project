@@ -72,6 +72,9 @@ def csvtodicts(filename, encoding='utf-8'):
         return list(csv.DictReader(f))
 
 def getGameweek():
+    '''
+    Gets previous gameweek number
+    '''
     g_data = getGenericFPLData()
     deadlines = [event['deadline_time'] for event in g_data['events']]
 
@@ -81,7 +84,7 @@ def getGameweek():
     # Convert deadlines to datetime while comparing
     for i in range(len(deadlines)):
         if datetime.strptime(deadlines[i], '%Y-%m-%dT%H:%M:%SZ') > time:
-            return i + 1
+            return i
     return None
 
 def parsegws(player_list, gameweek = None):
@@ -95,6 +98,7 @@ def parsegws(player_list, gameweek = None):
             # Check if data exists and most recent data is from most recent gw
             try:
                 data = past_gws[-1]
+                print(p_id)
                 if data['round'] == gameweek:
                     data['season'] = '2020-21'
                     data['player_name'] = player
@@ -134,5 +138,3 @@ def getChancePlaying(players):
         name = nameCleaner(player['first_name'] + ' ' + player['second_name'])
         res[name] = player['chance_of_playing_this_round']
     return res
-
-#connect('SQL/drop.sql', isfile=True)
