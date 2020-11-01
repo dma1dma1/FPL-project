@@ -98,7 +98,6 @@ def parsegws(player_list, gameweek = None):
             # Check if data exists and most recent data is from most recent gw
             try:
                 data = past_gws[-1]
-                print(p_id)
                 if data['round'] == gameweek:
                     data['season'] = '2020-21'
                     data['player_name'] = player

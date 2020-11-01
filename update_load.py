@@ -211,7 +211,7 @@ def update_load():
 
     gw_data_final = [gw_player_cleaner(player) for player in gw_data_final]
     gw_data_final = [[None if v=='' else v for v in player]for player in gw_data_final]
-    gw_data_final = [player + player[:2] + player[:-1] + player for player in gw_data_final]
+    gw_data_final = [player + player[:2] + player[-1:] + player for player in gw_data_final]
     gw_update_query = """
     WITH upsert AS (
         UPDATE gw_player_data
